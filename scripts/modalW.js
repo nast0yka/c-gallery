@@ -1,4 +1,4 @@
-import { exportFetch, numberOfPost } from './main.js';
+import { dataPosts } from './main.js';
 
 const body = document.querySelector('body');
 const bodyOverlay = document.querySelector('.body-overlay');
@@ -139,44 +139,37 @@ const modalPreview = document.querySelector(".preview-post-modal");
 const previewAllContent = document.querySelector('.photos__content');
 const modalContent = document.querySelector('.modal__content');
 
-function getDataForViewPost() {
-    exportFetch();
-};
-
 export function previewOfPostE() {
     previewAllContent.addEventListener("click", (event) => {
-        event.preventDefault();
+
         modalPreview.classList.toggle('active');
         let target = event.target;
-        let numberChoosedPost = target.closest('numberOfPost');
+        let ChoosedPost = target.closest('[data-numberOfPost]');
+        console.log(ChoosedPost);
+        let numberChoosedPost = ChoosedPost.dataset.numberofpost;
+        console.log(numberChoosedPost);
 
-        getDataForViewPost()
-            .then((result) => {
-                return result.json();
-            })
-            .then((data) => {
-                console.log(data);
-                data.forEach((item) => {
-                    const { id, text, image, tags, comments } = item;
 
-                    if (id === numberChoosedPost) { //не знаю , что писать в сравнение
-                        let modalImg = modalContent.querySelector('img');
-                        modalImg.src = image;
+        dataPosts.forEach((item) => {
+            const { id, text, image, tags, comments } = item;
 
-                        let modalText = modalContent.querySelector('.post-text');
-                        modalText.textContent = text;
+            if (id === numberChoosedPost) {
+                let modalImg = modalContent.querySelector('img');
+                modalImg.src = image;
 
-                        tags.forEach((item) => {
-                            let modalHasgtags = modalContent.querySelector('.post-hashtags');
-                            const tagOfModalPost = document.createElement("a");
-                            tagOfModalPost.textContent = item;
-                            modalHasgtags.append(tagOfModalPost);
-                        });
+                let modalText = modalContent.querySelector('.post-text');
+                modalText.textContent = text;
 
-                    } else {}
+                tags.forEach((item) => {
+                    let modalHasgtags = modalContent.querySelector('.post-hashtags');
+                    const tagOfModalPost = document.createElement("a");
+                    tagOfModalPost.textContent = item;
+                    modalHasgtags.append(tagOfModalPost);
                 });
-            })
-    });
+
+            } else {}
+        });
+    })
 }
 
 
@@ -193,14 +186,14 @@ export function previewOfPostE() {
 
 
 
-// const textOfPost = document.createElement("p");
-// textOfPost.textContent = text;
-// containerPost.append(textOfPost);
+// // const textOfPost = document.createElement("p");
+// // textOfPost.textContent = text;
+// // containerPost.append(textOfPost);
 
-// const tagsOfPost = document.createElement("span");
-// tagsOfPost.textContent = tags;
-// containerPost.append(tagsOfPost);
+// // const tagsOfPost = document.createElement("span");
+// // tagsOfPost.textContent = tags;
+// // containerPost.append(tagsOfPost);
 
-// const comentsOfPost = document.createElement("div"); 
-// comentsOfPost.textContent = comments;
-// containerPost.append(comentsOfPost);
+// // const comentsOfPost = document.createElement("div"); 
+// // comentsOfPost.textContent = comments;
+// // containerPost.append(comentsOfPost);
